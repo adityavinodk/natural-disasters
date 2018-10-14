@@ -16,3 +16,13 @@ We believe that with these measures in place, the entire flow of rescue and reli
 ## Target Audience-
 1. civilians who reside in disaster prone regions
 2. governmental and non-governmental agencies that help in the relief of affected inhabitants.
+
+## Installation instructions- 
+This project is being implemented using React Native and Firebase.
+
+1. Clone the repository and enter ```npm install``` in the terminal
+2. Add config file with credentials to config/config.js
+3. Run ```react-native run ios``` for ios 
+4. Run ```react-native run android``` for android
+
+Check [React-Native Documentation](https://facebook.github.io/react-native/docs/getting-started) for more information
