@@ -1,31 +1,24 @@
-import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import firebase from 'firebase';
-import config from './config/config';
-import loggedIn from './client/app/components/signUp/loggedIn';
-import loggedOut from './client/app/components/signUp/loggedOut';
-export const firebaseApp = firebase.initializeApp(config);
+import React from 'react'
+import { StyleSheet, Platform, Image, Text, View } from 'react-native'
+import { SwitchNavigator } from 'react-navigation'
 
-export default class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: true,
-    };
-  }
+// import the different screens
+import Loading from './client/auth/Loading'
+import SignUp from './client/auth/SignUp'
+import Login from './client/auth/Login'
+import Main from './client/auth/Main'
 
-  componentDidMount(){
-    this.authSubscription = firebase.auth().onAuthStateChanged(function(user){
-      this.setState({
-        loading: false,
-        user_name: user.name,
-      })
-    })
+// create our app's navigation stack
+const App = SwitchNavigator(
+  {
+    Loading,
+    SignUp,
+    Login,
+    Main
+  },
+  {
+    initialRouteName: 'Loading'
   }
-  
-  render() {
-    if(this.state.loading) return null;
-    if(this.state.user_name) return <loggedIn name={this.state.user_name}/>;
-    return <loggedOut />
-  }
-}
+)
+
+export default App
