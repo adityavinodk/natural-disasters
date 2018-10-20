@@ -1,7 +1,7 @@
 # OSX
 #
-.DS_Store
 
+.DS_Store
 # Xcode
 #
 build/
@@ -28,6 +28,7 @@ build/
 .idea
 .gradle
 local.properties
+/android/gradle.properties
 *.iml
 
 # node.js
@@ -59,8 +60,8 @@ buck-out/
 #
 .expo/
 /ios/Pods/
-# google-services.json
-# GoogleService-Info.plist
+/android/app/google-services.json
+/ios/GoogleService-Info.plist
 
 # RNFirebaseStarter
 yarn.lock
