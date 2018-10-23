@@ -1,16 +1,31 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import firebase from 'react-native-firebase'
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+const users = firestore.collection("users");
 
 export default class SignUp extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
+  state = { email: '', password: '', name:'', errorMessage: null }
 
   handleSignUp = () => {
-    const { email, password } = this.state
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(user => this.props.navigation.navigate('MainScreen'))
+    const { email, password, name } = this.state
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(user => {
+        users.add({
+          emergency: false,
+          email: email,
+          name: name,
+          location: new firebase.firestore.GeoPoint(0,0)
+        }).then(function(doc){
+          console.log("User is added to DB "+doc.id);
+          this.props.navigation.navigate('MainScreen',{
+            name: name
+          });
+        }).catch(function(err){
+          console.error("Error adding document: ", err);
+        })
+      })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
 
@@ -22,6 +37,12 @@ export default class SignUp extends React.Component {
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}
+        <TextInput
+          placeholder="Name"
+          style={styles.textInput}
+          onChangeText={name => this.setState({ name })}
+          value={this.state.name}
+        />
         <TextInput
           placeholder="Email"
           autoCapitalize="none"

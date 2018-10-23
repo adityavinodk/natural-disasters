@@ -60,6 +60,7 @@ buck-out/
 #
 .expo/
 /ios/Pods/
+/ios/Podfile.lock
 /android/app/google-services.json
 /ios/GoogleService-Info.plist
 
