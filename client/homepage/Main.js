@@ -9,6 +9,7 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // emergency: null,
       email: auth.currentUser.email,
     }
     this.enableEmergency = this.enableEmergency.bind(this)
@@ -41,6 +42,7 @@ export default class Main extends React.Component {
   }
 
   enableEmergency() {
+    var self = this;
     users.where("email", "==", this.state.email).get().then(function (querySnapshot) {
       var id = querySnapshot.docs[0].id
       console.log(id + ' clicked Emergency')
@@ -48,17 +50,19 @@ export default class Main extends React.Component {
         emergency: true
       }, { merge: true }).then(() => {
         console.log("Emergency activated");
+        self.setState({
+          emergency: true
+        })
       }).catch((err) => {
         console.log("Error writing document: ", error);
       })
     }).catch((err) => {
       console.log("Error: Document not found ", error);
     })
-
-    // this.forceUpdate();
   }
 
   disableEmergency() {
+    var self = this;
     users.where("email", "==", this.state.email).get().then(function (querySnapshot) {
       var id = querySnapshot.docs[0].id
       console.log(id + ' disabled Emergency')
@@ -66,15 +70,15 @@ export default class Main extends React.Component {
         emergency: false
       }, { merge: true }).then(() => {
         console.log("Emergency disabled");
+        self.setState({
+          emergency: false
+        })
       }).catch((err) => {
         console.log("Error writing document: ", error);
       })
     }).catch((err) => {
       console.log("Error: Document not found ", error);
     })
-
-    // this.forceUpdate();
-
   }
 
   handleDial() {
