@@ -12,7 +12,8 @@ export default class Main extends React.Component {
     this.state = {
       email: auth.currentUser.email,
       lat: null,
-      long: null
+      long: null,
+      locations: []
     }
     this.enableEmergency = this.enableEmergency.bind(this)
     this.disableEmergency = this.disableEmergency.bind(this)
@@ -20,16 +21,33 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
     var self = this;
     users.where("email", "==", auth.currentUser.email).get().then(function (querySnapshot) {
       var user_data = querySnapshot.docs[0].data()
       self.setState({
-        emergency: user_data.emergency,
         name: user_data.name
       })
-      if (user_data.emergency) console.log("Emergency Enabled! ")
+      if(user_data.role == "user"){
+        self.setState({
+          emergency: user_data.emergency
+        })
+        if (user_data.emergency) console.log("Emergency Enabled! ")
+      }
+      else{
+        users.where("emergency","==", true).onSnapshot(function(querySnapshot){
+          var docs = querySnapshot.docs
+          var locations = [];
+          docs.forEach((doc)=>{
+            locations.push(doc.data().location)
+          })
+          self.setState({
+            emergency_count: docs.length
+          })
+          console.log("Emergency count is "+docs.length)
+          console.log("Locations of emergency are - ")
+          console.log(locations)
+        })
+      }
     }).catch((err) => {
       console.log("Error: Document not found ", err);
     })
@@ -100,12 +118,10 @@ export default class Main extends React.Component {
     call_url = "tel:9004245501"
     Linking.openURL(call_url).catch(err => console.error('An error occurred', err));
   }
-  // Linking.openURL(url).catch(err => console.error('An error occurred', err));
 
   render() {
     const enable_emergency = (
       <Button
-        // style={styles.abc}
         title="Enable Emergency"
         onPress={this.enableEmergency}
       />
@@ -113,17 +129,15 @@ export default class Main extends React.Component {
 
     const disable_emergency = (
       <Button
-        // style={styles.abc}
         title="Disable Emergency"
         onPress={this.disableEmergency}
       />
     )
-
-
-    return (
+    
+    const user_content = (
       <View style={styles.container}>
         <Text style={styles.heading}>
-          {this.state.name ? "Hi " + this.state.name + "!" : null}
+        {this.state.name ? "Hi " + this.state.name + "!" : null}
         </Text>
         {this.state.emergency ? disable_emergency : enable_emergency}
         <Button
@@ -134,6 +148,36 @@ export default class Main extends React.Component {
           title="Logout"
           onPress={this.handleLogout}
         />
+      </View>
+    )
+
+    const printLocations = (
+      <View>
+      {
+        this.state.locations.map((location) => {
+        <Text>{location._latitude} {location._longitude}</Text>  
+        })
+      }
+      </View>
+    )
+
+    const admin_content = (
+      <View style={styles.container}>
+        <Text style={styles.heading}>{this.state.name ? "Hi " + this.state.name + "!" : null}</Text>
+        <Text style={styles.heading}>{this.state.emergency_count? "There are currently": null}</Text>
+        <Text style={styles.heading}>{this.state.emergency_count}</Text>
+        <Text style={styles.heading}>{this.state.emergency_count? "Emergencies": null}</Text>
+        {printLocations} 
+        <Button
+          title="Logout"
+          onPress={this.handleLogout}
+        />
+      </View>
+    )
+
+    return (
+      <View style={styles.container}>
+        {this.state.role == "user"? user_content: admin_content}
       </View>
     )
   }
