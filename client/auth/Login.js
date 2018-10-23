@@ -19,9 +19,7 @@ export default class Login extends React.Component {
         users.where("email","==",email).get().then(function(querySnapshot){
           var user_data = querySnapshot.docs[0].data()
           console.log(user_data.name);
-          this.props.navigation.navigate('MainScreen', {
-            name: user_data.name
-          })
+          this.props.navigation.navigate('MainScreen')
         }).catch((err)=>{
           console.log("Error: Document not found ", err);
         })

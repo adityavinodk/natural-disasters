@@ -19,9 +19,7 @@ export default class SignUp extends React.Component {
           location: new firebase.firestore.GeoPoint(0,0)
         }).then(function(doc){
           console.log("User is added to DB "+doc.id);
-          this.props.navigation.navigate('MainScreen',{
-            name: name
-          });
+          this.props.navigation.navigate('MainScreen');
         }).catch(function(err){
           console.error("Error adding document: ", err);
         })

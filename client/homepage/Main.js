@@ -17,59 +17,67 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
+    const { currentUser } = firebase.auth();
+    this.setState({ currentUser });
     var self = this;
-    users.where("email","==",auth.currentUser.email).get().then(function(querySnapshot){
+    users.where("email", "==", auth.currentUser.email).get().then(function (querySnapshot) {
       var user_data = querySnapshot.docs[0].data()
       self.setState({
-        emergency: user_data.emergency
+        emergency: user_data.emergency,
+        name: user_data.name
       })
-      if(user_data.emergency) console.log("Emergency Enabled! ")
-    }).catch((err)=>{
+      if (user_data.emergency) console.log("Emergency Enabled! ")
+    }).catch((err) => {
       console.log("Error: Document not found ", err);
     })
   }
 
   handleLogout() {
-    auth.signOut().then(function(){
+    auth.signOut().then(function () {
       this.props.navigation.navigate('LoginScreen');
-    }).catch(function(err){
+    }).catch(function (err) {
       console.log(err);
     })
   }
 
-  enableEmergency(){
-    users.where("email","==",this.state.email).get().then(function(querySnapshot){
+  enableEmergency() {
+    users.where("email", "==", this.state.email).get().then(function (querySnapshot) {
       var id = querySnapshot.docs[0].id
-      console.log(id+' clicked Emergency')
+      console.log(id + ' clicked Emergency')
       users.doc(id).set({
         emergency: true
-      },{merge: true}).then(()=>{
+      }, { merge: true }).then(() => {
         console.log("Emergency activated");
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log("Error writing document: ", error);
       })
-    }).catch((err)=>{
+    }).catch((err) => {
       console.log("Error: Document not found ", error);
     })
+
+    // this.forceUpdate();
   }
 
-  disableEmergency(){
-    users.where("email","==",this.state.email).get().then(function(querySnapshot){
+  disableEmergency() {
+    users.where("email", "==", this.state.email).get().then(function (querySnapshot) {
       var id = querySnapshot.docs[0].id
-      console.log(id+' disabled Emergency')
+      console.log(id + ' disabled Emergency')
       users.doc(id).set({
         emergency: false
-      },{merge: true}).then(()=>{
+      }, { merge: true }).then(() => {
         console.log("Emergency disabled");
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log("Error writing document: ", error);
       })
-    }).catch((err)=>{
+    }).catch((err) => {
       console.log("Error: Document not found ", error);
     })
+
+    // this.forceUpdate();
+
   }
 
-  handleDial(){
+  handleDial() {
     call_url = "tel:9004245501"
     Linking.openURL(call_url).catch(err => console.error('An error occurred', err));
   }
@@ -79,33 +87,33 @@ export default class Main extends React.Component {
     const enable_emergency = (
       <Button
         // style={styles.abc}
-          title = "Enable Emergency"
-          onPress = {this.enableEmergency}
+        title="Enable Emergency"
+        onPress={this.enableEmergency}
       />
     )
 
     const disable_emergency = (
       <Button
-          // style={styles.abc}
-          title = "Disable Emergency"
-          onPress = {this.disableEmergency}
+        // style={styles.abc}
+        title="Disable Emergency"
+        onPress={this.disableEmergency}
       />
     )
-    const { navigation } = this.props;
-    var name = navigation.getParam('name', 'no-name');
+
+
     return (
       <View style={styles.container}>
         <Text style={styles.heading}>
-          Hi {name}!
+          {this.state.name ? "Hi " + this.state.name + "!" : null}
         </Text>
-        {this.state.emergency? disable_emergency:enable_emergency}
+        {this.state.emergency ? disable_emergency : enable_emergency}
         <Button
-          title = "Call Helpline"
-          onPress = {this.handleDial}
+          title="Call Helpline"
+          onPress={this.handleDial}
         />
         <Button
-        title = "Logout"
-        onPress = {this.handleLogout}
+          title="Logout"
+          onPress={this.handleLogout}
         />
       </View>
     )
@@ -115,8 +123,8 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   heading: {
     fontSize: 25,
