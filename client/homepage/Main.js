@@ -5,12 +5,14 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 const users = firestore.collection("users");
 
+
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // emergency: null,
       email: auth.currentUser.email,
+      lat: null,
+      long: null
     }
     this.enableEmergency = this.enableEmergency.bind(this)
     this.disableEmergency = this.disableEmergency.bind(this)
@@ -43,21 +45,34 @@ export default class Main extends React.Component {
 
   enableEmergency() {
     var self = this;
+    var lat = 0; var long = 0;
     users.where("email", "==", this.state.email).get().then(function (querySnapshot) {
-      var id = querySnapshot.docs[0].id
-      console.log(id + ' clicked Emergency')
-      users.doc(id).set({
-        emergency: true
-      }, { merge: true }).then(() => {
-        console.log("Emergency activated");
+      var id = querySnapshot.docs[0].id;
+      console.log(id + ' clicked Emergency');
+      navigator.geolocation.getCurrentPosition(function (position) {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
         self.setState({
-          emergency: true
+          lat, long
+        });
+        users.doc(id).set({
+          emergency: true,
+          location: new firebase.firestore.GeoPoint(lat, long)
+        }, { merge: true }).then(() => {
+          console.log("Emergency activated");
+          self.setState({
+            emergency: true
+          })
+        }).catch((err) => {
+          console.log("Error writing document: ", err);
         })
-      }).catch((err) => {
-        console.log("Error writing document: ", error);
-      })
+        console.log(position.coords.latitude, self.state.long);
+      }, function (err) {
+        console.log("Error: " + err);
+        throw err;
+      }, { enableHighAccuracy: false, timeout: 20000 });
     }).catch((err) => {
-      console.log("Error: Document not found ", error);
+      console.log("Error: Document not found ", err);
     })
   }
 
