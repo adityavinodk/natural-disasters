@@ -10,6 +10,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.1",
     "react-native-firebase": "^5.0.0",
+    "react-native-maps": "^0.22.0",
     "react-navigation": "^2.18.0"
   },
   "devDependencies": {
