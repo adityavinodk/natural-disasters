@@ -1,5 +1,4 @@
-import React from 'react'
-import { SwitchNavigator } from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
 
 // import the different screens
 import Loading from './client/auth/Loading'
@@ -8,7 +7,7 @@ import Login from './client/auth/Login'
 import Main from './client/homepage/Main'
 
 // create our app's navigation stack
-const App = SwitchNavigator(
+const App = createSwitchNavigator(
   {
     LoadScreen: Loading,
     SignUpScreen: SignUp,

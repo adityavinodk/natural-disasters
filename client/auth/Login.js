@@ -1,16 +1,29 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import firebase from 'react-native-firebase'
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+const users = firestore.collection("users");
 
 export default class Login extends React.Component {
-  state = { email: '', password: '', errorMessage: null }
+  constructor(props){
+    super(props);
+    this.state = { email: '', password: '', errorMessage: null }
+    this.handleLogin = this.handleLogin.bind(this);
+  }
 
   handleLogin = () => {
     const { email, password } = this.state
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('MainScreen'))
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        users.where("email","==",email).get().then(function(querySnapshot){
+          var user_data = querySnapshot.docs[0].data()
+          console.log(user_data.name);
+          this.props.navigation.navigate('MainScreen')
+        }).catch((err)=>{
+          console.log("Error: Document not found ", err);
+        })
+      })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
 
