@@ -29,9 +29,12 @@ export default class Main extends React.Component {
       })
       if(user_data.role == "user"){
         self.setState({
-          emergency: user_data.emergency
-        })
-        if (user_data.emergency) console.log("Emergency Enabled! ")
+          emergency: user_data.emergency,
+          role: user_data.role
+        });
+        if (user_data.emergency){
+          console.log("Emergency Enabled! ")
+        }
       }
       else{
         users.where("emergency","==", true).onSnapshot(function(querySnapshot){

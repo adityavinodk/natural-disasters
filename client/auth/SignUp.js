@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text, TextInput, View } from 'react-native'
 import firebase from 'react-native-firebase'
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -73,14 +73,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: "#D6EAF8"
+    alignItems: 'center'
   },
   textInput: {
     height: 40,
     width: '90%',
     // backgroundColor: "#cd5c5c",
-    color: "white",
+    color: "black",
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 8,
