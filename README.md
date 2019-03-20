@@ -1,4 +1,10 @@
 # Natural Disaster Project
+
+Team Members:
+ Aditya Vinod Kumar
+ Rishi Ravikumar
+ Gaurang Rao
+ 
 ## This project aims to do the following main tasks (Use-Cases) - 
 1. Build a mobile application for users which can be used in situations of emergency to send a message to the nearest task force establishment for support-
    * Has options like Enable/Disable Emergency, SOS, Helpline, Notifying Important Contacts, 
