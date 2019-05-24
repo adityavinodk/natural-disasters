@@ -25,12 +25,12 @@ export default class Main extends React.Component {
     users.where("email", "==", auth.currentUser.email).get().then(function (querySnapshot) {
       var user_data = querySnapshot.docs[0].data()
       self.setState({
-        name: user_data.name
+        name: user_data.name,
+        role: user_data.role
       })
       if(user_data.role == "user"){
         self.setState({
-          emergency: user_data.emergency,
-          role: user_data.role
+          emergency: user_data.emergency
         });
         if (user_data.emergency){
           console.log("Emergency Enabled! ")
