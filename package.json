@@ -7,10 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/geolocation": "^1.4.2",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.1",
-    "react-native-firebase": "^5.0.0",
-    "react-native-maps": "^0.22.0",
+    "react-native": "^0.60.0",
+    "react-native-firebase": "^5.5.5",
     "react-navigation": "^2.18.0"
   },
   "devDependencies": {
