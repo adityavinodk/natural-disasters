@@ -1,4 +1,4 @@
-import { createSwitchNavigator } from 'react-navigation'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 
 // import the different screens
 import Loading from './client/auth/Loading'
@@ -19,4 +19,4 @@ const App = createSwitchNavigator(
   }
 )
 
-export default App
+export default createAppContainer(App)

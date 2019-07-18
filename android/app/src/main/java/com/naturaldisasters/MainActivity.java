@@ -1,4 +1,4 @@
-package com.rigaad.naturaldisasters;
+package com.naturalDisasters;
 
 import com.facebook.react.ReactActivity;
 

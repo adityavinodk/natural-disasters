@@ -68,3 +68,6 @@ buck-out/
 yarn.lock
 package-lock.json
 node_modules/
+
+# expo
+.expo/
