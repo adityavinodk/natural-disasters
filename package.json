@@ -8,7 +8,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "expo": "33.0.0",
+    "expo": "48.0.0",
     "expo-cli": "^2.21.2",
     "react": "16.8.6",
     "react-native": "0.60.3",
